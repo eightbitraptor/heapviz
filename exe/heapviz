@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.prepend("#{__dir__}/../lib")
+require 'heapviz'
+
+p ARGV
+if ARGV.length != 1 
+  p "Usage: heapviz <path_to_heap_dump.json>"
+end
+
+heap = Heapviz::Heap.new
+
+File.open(ARGV[0]) do |f|
+  f.each_line do |line|
+    p "parsing line #{line}" 
+    live_object = Heapviz::Slot.new(line)
+
+    if !live_object.gc_root?
+      page = heap.get_or_build_page_for(live_object)
+      #        page.add_object(object)
+    end
+  end
+end
