@@ -1,6 +1,6 @@
 module Heapviz
   class Page
-    attr_reader :live_objects
+    attr_reader :live_objects, :slot_size
 
     def initialize(address, obj_start_address, capacity, slot_size)
       @address = address
@@ -11,8 +11,8 @@ module Heapviz
       @live_objects = []
     end
 
-    def add_slot(slot)
-      fail "slot size mismatch" if slot.slot_size != slot_size
+    def fill_slot(slot)
+      fail "slot size mismatch" if slot.size != @slot_size
       @live_objects << slot
     end
 
@@ -21,8 +21,8 @@ module Heapviz
 
       objs = @live_objects.sort
 
-      capacity.times do |i|
-        expected = obj_start_address + (i * slot_size)
+      @capacity.times do |i|
+        expected = @obj_start_address + (i * slot_size)
         if objs.any? && objs.first.address == expected
           yield objs.shift
         else

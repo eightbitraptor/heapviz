@@ -1,27 +1,38 @@
 module Heapviz
   class Heap
-    SIZEOF_HEAP_PAGE_HEADER_STRUCT = Fiddle::SIZEOF_VOIDP
-    SIZEOF_RVALUE           = 40
-    HEAP_PAGE_ALIGN_LOG     = Heapviz::shiftcount(GC::INTERNAL_CONSTANTS[:HEAP_PAGE_SIZE])
-    HEAP_PAGE_ALIGN         = 1 << HEAP_PAGE_ALIGN_LOG      # 2 ^ 14 (or 16 on MacOS)
-    HEAP_PAGE_ALIGN_MASK    = ~(~0 << HEAP_PAGE_ALIGN_LOG)  # Mask for getting page address
-    HEAP_PAGE_SIZE          = HEAP_PAGE_ALIGN               # Actual page size
-    HEAP_PAGE_OBJ_LIMIT     = (HEAP_PAGE_SIZE - SIZEOF_HEAP_PAGE_HEADER_STRUCT) / SIZEOF_RVALUE
+    SIZEOF_PAGE_HEADER   = Fiddle::SIZEOF_VOIDP
+    SIZEOF_RVALUE        = 40
+    HEAP_PAGE_ALIGN_LOG  = Heapviz::shiftcount(GC::INTERNAL_CONSTANTS[:HEAP_PAGE_SIZE])
+    HEAP_PAGE_ALIGN      = 1 << HEAP_PAGE_ALIGN_LOG      # 2 ^ 14 (or 16 on MacOS)
+    HEAP_PAGE_ALIGN_MASK = ~(~0 << HEAP_PAGE_ALIGN_LOG)  # Mask for getting page address
+    HEAP_PAGE_SIZE       = HEAP_PAGE_ALIGN               # Actual page size
+    HEAP_PAGE_OBJ_LIMIT  = (HEAP_PAGE_SIZE - SIZEOF_PAGE_HEADER) / SIZEOF_RVALUE
 
     def initialize
-      @pages = []
+      @pages = {}
     end
 
     def get_or_build_page_for(slot)
-      p "getting page #{slot.page_body_address}"
-      @pages[slot.page_body_address] ||= build_page(slot.page_body_address, slot.size)     
+      @pages[slot.page_body_address] ||= build_page(slot.page_body_address, slot.size)
+    end
+
+    def pages
+      @pages.values
+    end
+
+    def page_count
+      @pages.length
+    end
+
+    def max_page_size
+      HEAP_PAGE_OBJ_LIMIT
     end
 
     private
 
     def build_page(page_body_address, slot_size)
       # Pages have a header with information, so we have to take that in to account
-      start = page_body_address + SIZEOF_HEAP_PAGE_HEADER_STRUCT
+      start = page_body_address + SIZEOF_PAGE_HEADER
 
       # If the object start address isn't evenly divisible by the size of a
       # Ruby object, we need to calculate the padding required to find the first
@@ -36,13 +47,11 @@ module Heapviz
       end
       limit = (HEAP_PAGE_SIZE - (start - page_body_address)) / slot_size
 
-      p "\tcreating page #{page_body_address}"
-      page = Page.new(page_body_address, start, limit, slot_size)
+      Page.new(page_body_address, start, limit, slot_size)
     end
 
     def num_in_page(obj)
       (obj & HEAP_PAGE_ALIGN_MASK) / SIZEOF_RVALUE 
     end
-
   end
 end

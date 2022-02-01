@@ -1,0 +1,13 @@
+GEM
+  remote: https://www.rubygems.org/
+  specs:
+    chunky_png (1.4.0)
+
+PLATFORMS
+  x86_64-darwin-20
+
+DEPENDENCIES
+  chunky_png
+
+BUNDLED WITH
+   2.2.3

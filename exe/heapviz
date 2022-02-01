@@ -4,20 +4,22 @@ $LOAD_PATH.prepend("#{__dir__}/../lib")
 require 'heapviz'
 
 p ARGV
-if ARGV.length != 1 
-  p "Usage: heapviz <path_to_heap_dump.json>"
+if ARGV.length != 2
+  p "Usage: heapviz <path_to_heap_dump.json> <output.png>"
+  exit 1
 end
 
 heap = Heapviz::Heap.new
 
 File.open(ARGV[0]) do |f|
   f.each_line do |line|
-    p "parsing line #{line}" 
     live_object = Heapviz::Slot.new(line)
 
     if !live_object.gc_root?
       page = heap.get_or_build_page_for(live_object)
-      #        page.add_object(object)
+      page.fill_slot(live_object)
     end
   end
 end
+
+Heapviz::Renderer.new(ARGV[1], heap).render
