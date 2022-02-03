@@ -3,9 +3,13 @@ require 'chunky_png'
 module Heapviz
   class Renderer
     SLOT_BASE_SIZE = 4
-    GREEN = ChunkyPNG::Color.rgba(0, 255, 0, 255);
-    RED   = ChunkyPNG::Color.rgba(255, 0, 0, 255);
-    BLACK = ChunkyPNG::Color.rgba(0, 0, 0, 255);
+    COLORS = [
+      ChunkyPNG::Color.rgba(104, 195, 163, 255),
+      ChunkyPNG::Color.rgba(27, 163, 156, 255),
+      ChunkyPNG::Color.rgba(200, 247, 197, 255),
+      ChunkyPNG::Color.rgba(22, 160, 133, 255),
+    ]
+    WHITE = ChunkyPNG::Color.rgba(255, 255, 255, 255);
 
     def initialize(op_path, heap)
       @op_path = op_path
@@ -27,9 +31,9 @@ module Heapviz
 
     def slot_colour(slot)
       if slot
-        slot.pinned? ? RED : GREEN
+        COLORS[(slot.size / Heap::SIZEOF_RVALUE) - 1]
       else
-        BLACK
+        WHITE
       end
     end
 
