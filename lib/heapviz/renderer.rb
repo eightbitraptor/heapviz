@@ -3,12 +3,12 @@ require 'chunky_png'
 module Heapviz
   class Renderer
     SLOT_BASE_SIZE = 4
-    COLORS = [
-      ChunkyPNG::Color.rgba(104, 195, 163, 255),
-      ChunkyPNG::Color.rgba(27, 163, 156, 255),
-      ChunkyPNG::Color.rgba(200, 247, 197, 255),
-      ChunkyPNG::Color.rgba(22, 160, 133, 255),
-    ]
+    COLORS = {
+      40 => ChunkyPNG::Color.rgba(104, 195, 163, 255),
+      80 => ChunkyPNG::Color.rgba(27, 163, 156, 255),
+      160 => ChunkyPNG::Color.rgba(200, 247, 197, 255),
+      320 => ChunkyPNG::Color.rgba(22, 160, 133, 255),
+    }
     WHITE = ChunkyPNG::Color.rgba(255, 255, 255, 255);
 
     def initialize(op_path, heap)
@@ -31,7 +31,7 @@ module Heapviz
 
     def slot_colour(slot)
       if slot
-        COLORS[(slot.size / Heap::SIZEOF_RVALUE) - 1]
+        COLORS[slot.size]
       else
         WHITE
       end
