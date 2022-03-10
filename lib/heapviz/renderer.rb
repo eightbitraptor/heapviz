@@ -10,6 +10,7 @@ module Heapviz
       320 => ChunkyPNG::Color.rgba(22, 160, 133, 255),
     }
     WHITE = ChunkyPNG::Color.rgba(255, 255, 255, 255);
+    BLACK = ChunkyPNG::Color.rgba(0, 0, 0, 255);
 
     def initialize(op_path, heap)
       @op_path = op_path
@@ -30,7 +31,9 @@ module Heapviz
     end
 
     def slot_colour(slot)
-      if slot
+      if slot && slot.pinned?
+          BLACK
+      elsif slot
         COLORS[slot.size]
       else
         WHITE
