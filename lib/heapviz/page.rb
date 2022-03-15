@@ -1,6 +1,6 @@
 module Heapviz
   class Page
-    attr_reader :live_objects, :slot_size
+    attr_reader :live_objects, :slot_size, :address
 
     def initialize(address, obj_start_address, capacity, slot_size)
       @address = address
@@ -19,7 +19,7 @@ module Heapviz
     def each_slot
       return enum_for(:each_slot) unless block_given?
 
-      objs = @live_objects.sort
+      objs = sorted_objects
 
       @capacity.times do |i|
         expected = @obj_start_address + (i * slot_size)
@@ -31,8 +31,12 @@ module Heapviz
       end
     end
 
+    def sorted_objects
+      @live_objects.sort
+    end
+
     def full?
-      @live_objects.count == capacity
+      @live_objects.count == @capacity
     end
 
     def pinned_count
