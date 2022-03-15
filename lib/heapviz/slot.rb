@@ -1,4 +1,5 @@
 require 'json'
+require 'heapviz/heap'
 
 module Heapviz
   class Slot
@@ -28,7 +29,7 @@ module Heapviz
     end
 
     def has_flags?
-      !gc_root? && !(@type == "T_DATA")
+      !gc_root?
     end
 
     def <=>(o)
