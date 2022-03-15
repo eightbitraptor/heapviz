@@ -31,12 +31,14 @@ module Heapviz
     end
 
     def slot_colour(slot)
-      if slot && slot.pinned?
-          BLACK
-      elsif slot
-        COLORS[slot.size]
-      else
+      return WHITE unless slot
+
+      if slot.pinned?
+        BLACK
+      elsif slot.type == "NONE"
         WHITE
+      else
+        COLORS[slot.size]
       end
     end
 
