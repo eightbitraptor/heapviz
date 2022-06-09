@@ -1,9 +1,8 @@
-source "https://www.rubygems.org"
+# frozen_string_literal: true
 
-gem "chunky_png"
-gem "rake"
+source "https://rubygems.org"
+gemspec
 
-group :development, :test do
-  gem "minitest"
-  gem "mocha"
-end
+gem "rake", "~> 13.0"
+
+gem "minitest", "~> 5.0"

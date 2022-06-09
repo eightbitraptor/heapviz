@@ -1,7 +1,5 @@
 require 'fiddle'
-
-module Heapviz
-end
+require 'heapviz/version.rb'
 
 require 'heapviz/heap'
 require 'heapviz/page'

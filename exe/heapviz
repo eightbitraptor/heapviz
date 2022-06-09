@@ -3,7 +3,6 @@
 $LOAD_PATH.prepend("#{__dir__}/../lib")
 require 'heapviz'
 
-p ARGV
 if ARGV.length != 2
   p "Usage: heapviz <path_to_heap_dump.json> <output.png>"
   exit 1
