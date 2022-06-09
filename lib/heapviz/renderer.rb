@@ -48,7 +48,9 @@ module Heapviz
       # right now
       adjusted_height = SLOT_BASE_SIZE * (page.slot_size / Heap::SIZEOF_RVALUE)
 
+      $stderr.puts "#{page}"
       page.each_slot.with_index do |slot, y|
+        $stderr.puts "\t=> #{slot}"
         y = y * adjusted_height
 
         adjusted_height.times do |y_offset|

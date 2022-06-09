@@ -35,5 +35,9 @@ module Heapviz
     def <=>(o)
       address <=> o.address
     end
+
+    def to_s
+      "{address: 0x#{address.to_s(16)}, type: #{type}, flags: #{flags}}"
+    end
   end
 end

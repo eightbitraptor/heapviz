@@ -50,5 +50,9 @@ module Heapviz
     def fragmented?
       !full?
     end
+
+    def to_s
+      "{page: #{address.to_s(16)}, slot_size: #{slot_size}, full: #{full?}}"
+    end
   end
 end
