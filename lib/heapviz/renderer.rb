@@ -8,6 +8,7 @@ module Heapviz
       80 => ChunkyPNG::Color.rgba(27, 163, 156, 255),
       160 => ChunkyPNG::Color.rgba(200, 247, 197, 255),
       320 => ChunkyPNG::Color.rgba(22, 160, 133, 255),
+      640 => ChunkyPNG::Color.rgba(22, 160, 255, 255),
     }
     WHITE = ChunkyPNG::Color.rgba(255, 255, 255, 255);
     BLACK = ChunkyPNG::Color.rgba(0, 0, 0, 255);
