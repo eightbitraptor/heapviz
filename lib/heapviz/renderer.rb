@@ -1,3 +1,4 @@
+require 'logger'
 require 'chunky_png'
 
 module Heapviz
@@ -13,8 +14,10 @@ module Heapviz
     WHITE = ChunkyPNG::Color.rgba(255, 255, 255, 255);
     BLACK = ChunkyPNG::Color.rgba(0, 0, 0, 255);
 
-    def initialize(op_path, heap)
+    def initialize(op_path, heap, logger = nil)
       @op_path = op_path
+      @logger = logger || Logger.new(op_path + ".log")
+      @logger.datetime_format = "%s.%L"
       @heap = heap
       @img = ChunkyPNG::Image.new(
         heap.page_count * SLOT_BASE_SIZE,
@@ -49,9 +52,9 @@ module Heapviz
       # right now
       adjusted_height = SLOT_BASE_SIZE * (page.slot_size / Heap::SIZEOF_RVALUE)
 
-      $stderr.puts "#{page}"
+      @logger.debug "#{page}"
       page.each_slot.with_index do |slot, y|
-        $stderr.puts "\t=> #{slot}"
+        @logger.debug "\t=> #{slot}"
         y = y * adjusted_height
 
         adjusted_height.times do |y_offset|
