@@ -12,24 +12,11 @@ module Heapviz
     end
 
     def test_heap_page_align_log
-      heap_page_size = GC::INTERNAL_CONSTANTS[:HEAP_PAGE_SIZE]
-
-      #  macOS uses 64kb page sizes, all other systems use 16kb
-      if heap_page_size > 16384
-        assert_equal(16, Config::HEAP_PAGE_ALIGN_LOG)
-      else
-        assert_equal(14, Config::HEAP_PAGE_ALIGN_LOG)
-      end
+      assert_equal(16, Config::HEAP_PAGE_ALIGN_LOG)
     end
 
     def test_heap_page_align
-      heap_page_size = GC::INTERNAL_CONSTANTS[:HEAP_PAGE_SIZE]
-
-      if heap_page_size > 16384
-        assert_equal(65536, Config::HEAP_PAGE_ALIGN)
-      else
-        assert_equal(16384, Config::HEAP_PAGE_ALIGN)
-      end
+      assert_equal(65536, Config::HEAP_PAGE_ALIGN)
     end
 
     def test_heap_page_size
@@ -41,13 +28,7 @@ module Heapviz
     end
 
     def test_heap_page_obj_limit
-      heap_page_size = GC::INTERNAL_CONSTANTS[:HEAP_PAGE_SIZE]
-
-      if heap_page_size > 16384
-        assert_equal(1638, Config::HEAP_PAGE_OBJ_LIMIT)
-      else
-        assert_equal(409, Config::HEAP_PAGE_OBJ_LIMIT)
-      end
+      assert_equal(1638, Config::HEAP_PAGE_OBJ_LIMIT)
     end
   end
 end

@@ -1,5 +1,4 @@
 require 'fiddle'
-require 'debug'
 
 module Heapviz
 end
