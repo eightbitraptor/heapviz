@@ -13,10 +13,7 @@ are organised in rows and columns:
 
 ## Running
 
-This script requires a commit that recently landed on Ruby master to
-add a `slot_size` field to the output of `ObjectSpace.dump_all`. Use
-your Ruby version manager of choice to install the development release
-of Ruby and then write a script that dumps the heap to a file.
+This script requires Ruby >= 3.2.0
 
 ```
 require 'objspace'
