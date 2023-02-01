@@ -1,8 +1,5 @@
 # Heapviz
 
-**Warning: This probably shouldn't be used for anything important. It
-requires patching and building a custom Ruby**
-
 Produces a png of a json dump of the Ruby objspace. Heap dump images
 are organised in rows and columns:
 
